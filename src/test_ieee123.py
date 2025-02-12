@@ -59,7 +59,7 @@ def test_ieee123():
             G_den2ne_alg.clearSelectedIDs()
             G_den2ne_alg.selectBestIDs(criterion)
 
-            # Ideal balance
+            #  ----------------     Ideal balance      ----------------
             [total_balance_ideal, abs_flux] = G_den2ne_alg.globalBalance(
                 withLosses=False,
                 withCap=False,
@@ -78,7 +78,7 @@ def test_ieee123():
             G_den2ne_alg.clearSelectedIDs()
             G_den2ne_alg.selectBestIDs(criterion)
 
-            # Withloss balance
+            #  ----------------     Withloss balance      ----------------
             [total_balance_with_losses, abs_flux_with_losses] = (
                 G_den2ne_alg.globalBalance(
                     withLosses=True,
@@ -99,7 +99,7 @@ def test_ieee123():
             G_den2ne_alg.clearSelectedIDs()
             G_den2ne_alg.selectBestIDs(criterion)
 
-            # Withloss and Cap balance
+            #  ----------------     Withloss and Cap balance      ----------------
             [total_balance_with_lossesCap, abs_flux_with_lossesCap] = (
                 G_den2ne_alg.globalBalance(
                     withLosses=True,
@@ -110,7 +110,7 @@ def test_ieee123():
                 )
             )
 
-            # Save data
+            # ------------------------ Save data --------------------------
             out_data[delta][criterion] = {
                 "total_balance_ideal": total_balance_ideal,
                 "abs_flux": abs_flux,
