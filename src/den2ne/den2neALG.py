@@ -549,9 +549,9 @@ class Den2ne(object):
         for node in self.G.nodes:
             if self.G.nodes[node].load != 0:
                 if node != self.G.root:
-                    return False
+                    return True
         else:
-            return True
+            return False
 
     @staticmethod
     def key_sort_by_HLMAC_len(id):
