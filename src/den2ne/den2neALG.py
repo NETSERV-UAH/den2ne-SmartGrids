@@ -217,17 +217,8 @@ class Den2ne(object):
         elif Den2ne.CRITERION_DISTANCE == criterion:
             self.selectBestID_by_distance()
 
-        elif Den2ne.CRITERION_POWER_BALANCE == criterion:
-            self.selectBestID_by_balance()
-
-        elif Den2ne.CRITERION_POWER_BALANCE_WITH_LOSSES == criterion:
-            self.selectBestID_by_balance_with_Losses()
-
         elif Den2ne.CRITERION_LINKS_LOSSES == criterion:
             self.selectBestID_by_Links_Losses()
-
-        elif Den2ne.CRITERION_POWER_BALANCE_WEIGHTED == criterion:
-            self.selectBestID_by_weighted_balance()
 
         elif Den2ne.CRITERION_POWER_TO_ZERO == criterion:
             self.selectBestID_by_power2zero()
@@ -285,57 +276,6 @@ class Den2ne(object):
 
         return distances
 
-    def selectBestID_by_balance(self):
-        """
-        Función para decidir la mejor ID de un nodo por balance de potencia al root
-        """
-        for node in self.G.nodes:
-            balances = [self.getTotalBalance(id) for id in self.G.nodes[node].ids]
-
-            self.G.nodes[node].ids[balances.index(max(balances))].active = True
-            self.global_ids.append(self.G.nodes[node].getActiveID())
-
-        self.flowInertia()
-
-    def getTotalBalance(self, id):
-        """
-        Funcion para calcular el balance de potencias total de una HLMAC
-        """
-        balance = 0
-        for i in range(0, len(id.hlmac)):
-            balance += self.G.nodes[id.hlmac[i]].load
-
-        return balance
-
-    def selectBestID_by_balance_with_Losses(self):
-        """
-        Función para decidir la mejor ID de un nodo por balance de potencia al root con perdidas
-        """
-        for node in self.G.nodes:
-            balances = [
-                self.getTotalBalance_with_Losses(id) for id in self.G.nodes[node].ids
-            ]
-
-            self.G.nodes[node].ids[balances.index(max(balances))].active = True
-            self.global_ids.append(self.G.nodes[node].getActiveID())
-
-        self.flowInertia()
-
-    def getTotalBalance_with_Losses(self, id):
-        """
-        Funcion para calcular el balance de potencias total de una HLMAC con perdidas
-        """
-        balance = 0
-        for i in range(len(id.hlmac) - 1, 0, -1):
-            curr_node = self.G.nodes[id.hlmac[i]]
-
-            # No tenemos en cuenta el root.. es uno nodo virtual, nos ahorramos comprobaciones y sumar 0
-            balance += curr_node.load - curr_node.links[
-                curr_node.neighbors.index(id.hlmac[i - 1])
-            ].getLosses(curr_node.load + balance)
-
-        return balance
-
     def selectBestID_by_Links_Losses(self):
         """
         Función para decidir la mejor ID de un nodo en función de sus perdidas al root
@@ -372,31 +312,6 @@ class Den2ne(object):
 
         return total_losses
 
-    def selectBestID_by_weighted_balance(self):
-        """
-        Función para decidir la mejor ID de un nodo por balance de potencia al root, normalizado por el numero de saltos al mismo
-        """
-        for node in self.G.nodes:
-            norm_balances = [
-                self.getTotalWeightedBalance(id) for id in self.G.nodes[node].ids
-            ]
-
-            self.G.nodes[node].ids[
-                norm_balances.index(max(norm_balances))
-            ].active = True
-            self.global_ids.append(self.G.nodes[node].getActiveID())
-
-        self.flowInertia()
-
-    def getTotalWeightedBalance(self, id):
-        """
-        Funcion para calcular el balance de potencias normalizado en total de una HLMAC
-        """
-        balance = 0
-        for i in range(0, len(id.hlmac)):
-            balance += self.G.nodes[id.hlmac[i]].load
-
-        return balance / len(id.hlmac)
 
     def selectBestID_by_power2zero(self):
         """
@@ -630,17 +545,6 @@ class Den2ne(object):
             # Incrementamos el contador de iteraciones
             iteration += 1
 
-            # [DEBUG] Pintamos el flujo paso por paso
-            if withDebugPlot:
-                self.G.plotStepDiGraph(path, positions, str(iteration))
-
-        # [DEBUG] Generamos GIF para visualizarlo mejor
-        if withDebugPlot:
-            with imageio.get_writer(path + "test.gif", mode="I", fps=2) as writer:
-                for filename in range(1, iteration + 1):
-                    image = imageio.imread(path + str(filename) + ".png")
-                    writer.append_data(image)
-                    os.remove(path + str(filename) + ".png")
 
         # Devolvemos el balance total
         return [self.G.nodes[self.root].load, abs_flux]
