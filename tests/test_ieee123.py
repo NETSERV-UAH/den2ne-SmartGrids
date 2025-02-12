@@ -19,6 +19,7 @@ class TestIEEE123(unittest.TestCase):
         cls.G_den2ne_alg.spread_ids()
 
     def test_a_spread_ids(self):
+        print(str(self.G_den2ne_alg.global_ids))
         self.assertTrue(len(self.G_den2ne_alg.global_ids) > 0)
 
     def test_b_update_loads(self):
