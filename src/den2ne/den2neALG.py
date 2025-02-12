@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-from numpy.lib.function_base import append
 from .den2neHLMAC import HLMAC
-import imageio
 import os
 
 
@@ -14,12 +12,9 @@ class Den2ne(object):
     # Declaramos tipos de criterio para la decisión entre IDs
     CRITERION_NUM_HOPS = 0
     CRITERION_DISTANCE = 1
-    CRITERION_POWER_BALANCE = 2
-    CRITERION_POWER_BALANCE_WITH_LOSSES = 3
-    CRITERION_LINKS_LOSSES = 4
-    CRITERION_POWER_BALANCE_WEIGHTED = 5
-    CRITERION_POWER_TO_ZERO = 6
-    CRITERION_POWER_TO_ZERO_WITH_LOSSES = 7
+    CRITERION_LINKS_LOSSES = 2
+    CRITERION_POWER_TO_ZERO = 3
+    CRITERION_POWER_TO_ZERO_WITH_LOSSES = 4
 
     # Fijamos el número máximo de IDs por nodo
     IDS_MAX = 10
