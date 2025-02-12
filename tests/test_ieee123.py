@@ -19,13 +19,12 @@ class TestIEEE123(unittest.TestCase):
         cls.G_den2ne_alg.spread_ids()
 
     def test_a_spread_ids(self):
-        self.G_den2ne_alg.spread_ids()
         self.assertTrue(len(self.G_den2ne_alg.global_ids) > 0)
 
     def test_b_update_loads(self):
-        initial_loads = self.G_den2ne_alg.G.nodes["1"].copy()
+        initial_loads = self.G_den2ne_alg.G.nodes["1"].load
         self.G_den2ne_alg.updateLoads(self.loads, 1)
-        self.assertNotEqual(initial_loads, self.G_den2ne_alg.G.nodes["1"])
+        self.assertNotEqual(initial_loads, self.G_den2ne_alg.G.nodes["1"].load)
 
     def test_c_select_best_ids(self):
         self.G_den2ne_alg.selectBestIDs(Den2ne.CRITERION_NUM_HOPS)
