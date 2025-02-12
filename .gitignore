@@ -1,0 +1,5 @@
+# Ignorar todos los archivos dentro de la carpeta /results/
+src/results/*
+
+# Ignorar vscode cosas
+.vscode
