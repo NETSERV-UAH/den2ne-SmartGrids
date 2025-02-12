@@ -5,6 +5,22 @@ from graph.graph import Graph
 from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
 
+# Vars just for debugging
+# Definir los códigos de color
+GREEN = "\033[92m"
+BLUE = "\033[94m"
+RED = "\033[91m"
+YELLOW = "\033[93m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
+# Definir los anchos de las columnas
+delta_width = 3
+criteria_width = 3
+ideal_case_width = 20
+balance_width = 10
+flow_width = 10
+
 
 # Vamos a programar unas pruebas globales sobre la topología IEEE 123
 def test_ieee123():
@@ -67,6 +83,16 @@ def test_ieee123():
                 positions=positions,
                 path="results/",
             )
+            scenario = "IDEAL"
+            message = (
+                f"[DEBUG][Delta {delta:<{delta_width}}] "
+                f"{GREEN}[Criteria {BOLD}{criterion:>{criteria_width}}{RESET}]{RESET} "
+                f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
+                f"{RED}[Balance {BOLD}{total_balance_ideal:^{balance_width}.2f}{RESET} kW]{RESET} "
+                f"{BLUE}[Flow {BOLD}{abs_flux:^{flow_width}.2f}{RESET} kW]{RESET}"
+            )
+            # Imprimir el mensaje
+            print(message)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -88,6 +114,16 @@ def test_ieee123():
                     path="results/",
                 )
             )
+            scenario = "LOSS"
+            message = (
+                f"[DEBUG][Delta {delta:<{delta_width}}] "
+                f"{GREEN}[Criteria {BOLD}{criterion:>{criteria_width}}{RESET}]{RESET} "
+                f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
+                f"{RED}[Balance {BOLD}{total_balance_with_losses:^{balance_width}.2f}{RESET} kW]{RESET} "
+                f"{BLUE}[Flow {BOLD}{abs_flux_with_losses:^{flow_width}.2f}{RESET} kW]{RESET}"
+            )
+            # Imprimir el mensaje
+            print(message)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -109,6 +145,16 @@ def test_ieee123():
                     path="results/",
                 )
             )
+            scenario = "LOSS_CAP"
+            message = (
+                f"[DEBUG][Delta {delta:<{delta_width}}] "
+                f"{GREEN}[Criteria {BOLD}{criterion:>{criteria_width}}{RESET}]{RESET} "
+                f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
+                f"{RED}[Balance {BOLD}{total_balance_with_lossesCap:^{balance_width}.2f}{RESET} kW]{RESET} "
+                f"{BLUE}[Flow {BOLD}{abs_flux_with_lossesCap:^{flow_width}.2f}{RESET} kW]{RESET}"
+            )
+            # Imprimir el mensaje
+            print(message)
 
             # ------------------------ Save data --------------------------
             out_data[delta][criterion] = {
