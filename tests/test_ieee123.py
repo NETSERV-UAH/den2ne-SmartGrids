@@ -21,7 +21,7 @@ class TestIEEE123(unittest.TestCase):
     def test_a_spread_ids(self):
         global_ids = list()
         for node in self.G_den2ne_alg.G.nodes:
-            for id in node.ids:
+            for id in self.G_den2ne_alg.G.nodes[node].ids:
                 global_ids.append(id)            
         self.assertTrue(len(global_ids) > len(self.G_den2ne_alg.G.nodes))
 
