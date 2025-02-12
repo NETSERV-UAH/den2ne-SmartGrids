@@ -1,5 +1,4 @@
 import unittest
-unittest.TestLoader.sortTestMethodsUsing = None
 from graph.graph import Graph
 from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
@@ -40,4 +39,11 @@ class TestIEEE123(unittest.TestCase):
         self.assertIsInstance(flux, (int, float))
 
 if __name__ == "__main__":
-    unittest.main()
+    suite = unittest.TestSuite()
+    suite.addTest(TestIEEE123("test_a_spread_ids"))
+    suite.addTest(TestIEEE123("test_b_update_loads"))
+    suite.addTest(TestIEEE123("test_c_select_best_ids"))
+    suite.addTest(TestIEEE123("test_d_global_balance"))
+
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
