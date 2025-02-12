@@ -8,11 +8,11 @@ from dataCollector.dataCollector import DataGatherer
 class TestIEEE123(unittest.TestCase):
     
     def setUp(self):
-        self.loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
-        self.edges = DataGatherer.getEdges("data/links.csv")
-        self.edges_conf = DataGatherer.getEdges_Config("data/links_config.csv")
-        self.sw_edges = DataGatherer.getSwitches("data/switches.csv")
-        self.positions = DataGatherer.getPositions("data/node_positions.csv")
+        self.loads = DataGatherer.getLoads("src/data/loads/loads_v2.csv", 3)
+        self.edges = DataGatherer.getEdges("src/ddata/links.csv")
+        self.edges_conf = DataGatherer.getEdges_Config("src/ddata/links_config.csv")
+        self.sw_edges = DataGatherer.getSwitches("src/ddata/switches.csv")
+        self.positions = DataGatherer.getPositions("src/ddata/node_positions.csv")
         
         self.G = Graph(0, self.loads, self.edges, self.sw_edges, self.edges_conf, root="150")
         self.G.pruneGraph()
