@@ -3,21 +3,21 @@ from graph.graph import Graph
 from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
 
-
-
 class TestIEEE123(unittest.TestCase):
-    
-    def setUp(self):
-        self.loads = DataGatherer.getLoads("src/data/loads/loads_v2.csv", 3)
-        self.edges = DataGatherer.getEdges("src/data/links.csv")
-        self.edges_conf = DataGatherer.getEdges_Config("src/data/links_config.csv")
-        self.sw_edges = DataGatherer.getSwitches("src/data/switches.csv")
-        self.positions = DataGatherer.getPositions("src/data/node_positions.csv")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.loads = DataGatherer.getLoads("src/data/loads/loads_v2.csv", 3)
+        cls.edges = DataGatherer.getEdges("src/data/links.csv")
+        cls.edges_conf = DataGatherer.getEdges_Config("src/data/links_config.csv")
+        cls.sw_edges = DataGatherer.getSwitches("src/data/switches.csv")
+        cls.positions = DataGatherer.getPositions("src/data/node_positions.csv")
         
-        self.G = Graph(0, self.loads, self.edges, self.sw_edges, self.edges_conf, root="150")
-        self.G.pruneGraph()
-        self.G_den2ne_alg = Den2ne(self.G)
-        
+        cls.G = Graph(0, cls.loads, cls.edges, cls.sw_edges, cls.edges_conf, root="150")
+        cls.G.pruneGraph()
+        cls.G_den2ne_alg = Den2ne(cls.G)
+        cls.G_den2ne_alg.spread_ids()
+
     def test_a_spread_ids(self):
         self.G_den2ne_alg.spread_ids()
         self.assertTrue(len(self.G_den2ne_alg.global_ids) > 0)
@@ -39,11 +39,4 @@ class TestIEEE123(unittest.TestCase):
         self.assertIsInstance(flux, (int, float))
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-    suite.addTest(TestIEEE123("test_a_spread_ids"))
-    suite.addTest(TestIEEE123("test_b_update_loads"))
-    suite.addTest(TestIEEE123("test_c_select_best_ids"))
-    suite.addTest(TestIEEE123("test_d_global_balance"))
-
-    runner = unittest.TextTestRunner()
-    runner.run(suite)
+    unittest.main()
