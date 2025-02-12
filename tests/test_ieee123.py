@@ -19,9 +19,11 @@ class TestIEEE123(unittest.TestCase):
         cls.G_den2ne_alg.spread_ids()
 
     def test_a_spread_ids(self):
-        print(str(self.G_den2ne_alg.global_ids))
-        print(str(self.G_den2ne_alg.G.nodes))
-        self.assertTrue(len(self.G_den2ne_alg.global_ids) > 0)
+        global_ids = list()
+        for node in self.G_den2ne_alg.G.nodes:
+            for id in node.ids:
+                global_ids.append(id)            
+        self.assertTrue(len(global_ids) > len(self.G_den2ne_alg.G.nodes))
 
     def test_b_update_loads(self):
         initial_loads = self.G_den2ne_alg.G.nodes["1"].load
@@ -34,6 +36,7 @@ class TestIEEE123(unittest.TestCase):
 
     def test_d_global_balance(self):
         self.G_den2ne_alg.updateLoads(self.loads, 1)
+        self.G_den2ne_alg.clearSelectedIDs()
         self.G_den2ne_alg.selectBestIDs(Den2ne.CRITERION_NUM_HOPS)
         balance, flux = self.G_den2ne_alg.globalBalance(withLosses=False, withCap=False, withDebugPlot=False, positions=self.positions, path="results/")
         self.assertIsInstance(balance, (int, float))
