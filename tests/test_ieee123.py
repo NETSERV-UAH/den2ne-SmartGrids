@@ -4,11 +4,7 @@ from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
 import os
 
-# get the current working directory
-current_working_directory = os.getcwd()
 
-# print output to the console
-print(current_working_directory)
 
 class TestIEEE123(unittest.TestCase):
     
@@ -44,4 +40,9 @@ class TestIEEE123(unittest.TestCase):
         self.assertIsInstance(flux, (int, float))
 
 if __name__ == "__main__":
+    # get the current working directory
+    current_working_directory = os.getcwd()
+
+    # print output to the console
+    print(current_working_directory)
     unittest.main()
