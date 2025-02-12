@@ -90,6 +90,7 @@ def test_ieee123():
                 f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
                 f"{RED}[Balance {BOLD}{total_balance_ideal:^{balance_width}.2f}{RESET} kW]{RESET} "
                 f"{BLUE}[Flow {BOLD}{abs_flux:^{flow_width}.2f}{RESET} kW]{RESET}"
+                f"[ENCLOSED LOADs == {str(G_den2ne_alg.are_enlclosedLoads())}]"
             )
             # Imprimir el mensaje
             print(message)
@@ -121,6 +122,7 @@ def test_ieee123():
                 f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
                 f"{RED}[Balance {BOLD}{total_balance_with_losses:^{balance_width}.2f}{RESET} kW]{RESET} "
                 f"{BLUE}[Flow {BOLD}{abs_flux_with_losses:^{flow_width}.2f}{RESET} kW]{RESET}"
+                f"[ENCLOSED LOADs == {str(G_den2ne_alg.are_enlclosedLoads())}]"
             )
             # Imprimir el mensaje
             print(message)
@@ -145,6 +147,7 @@ def test_ieee123():
                     path="results/",
                 )
             )
+
             scenario = "LOSS_CAP"
             message = (
                 f"[DEBUG][Delta {delta:<{delta_width}}] "
@@ -152,6 +155,7 @@ def test_ieee123():
                 f"{BLUE}[Scenario {BOLD} {scenario:<{15}}{RESET}] --> "
                 f"{RED}[Balance {BOLD}{total_balance_with_lossesCap:^{balance_width}.2f}{RESET} kW]{RESET} "
                 f"{BLUE}[Flow {BOLD}{abs_flux_with_lossesCap:^{flow_width}.2f}{RESET} kW]{RESET}"
+                f"[ENCLOSED LOADs == {str(G_den2ne_alg.are_enlclosedLoads())}]"
             )
             # Imprimir el mensaje
             print(message)
