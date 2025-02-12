@@ -1,4 +1,5 @@
 import unittest
+unittest.TestLoader.sortTestMethodsUsing = None
 from graph.graph import Graph
 from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
