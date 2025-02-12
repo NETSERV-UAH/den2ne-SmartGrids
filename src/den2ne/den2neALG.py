@@ -351,7 +351,7 @@ class Den2ne(object):
         """
         for node in self.G.nodes:
             power2zero = [
-                self.getTotalWeightedBalance(id) for id in self.G.nodes[node].ids
+                self.getTotalPower2Zero_with_Losses(id) for id in self.G.nodes[node].ids
             ]
 
             self.G.nodes[node].ids[power2zero.index(min(power2zero))].active = True
