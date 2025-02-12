@@ -312,7 +312,6 @@ class Den2ne(object):
 
         return total_losses
 
-
     def selectBestID_by_power2zero(self):
         """
         Función para decidir la mejor ID de un nodo cercanía de potecia a cero, al root
@@ -448,35 +447,31 @@ class Den2ne(object):
             cap = self.G.getLinkCapacity(origin.name, dst.name)
 
             # Añadimos un print para debugear
-            # print(
-            #    f"[DEBUG][Step {iteration}][Origin | {origin.name} | {origin.load:.2f} kW][Destination | {dst.name} | {dst.load:.2f} kW][Losses {origin.links[origin.neighbors.index(dst.name)].getLosses(origin.load):.2f} kW]"
-            # )
-            # Definir la longitud fija para cada campo
-            step_width = 5
-            origin_name_width = 3
-            origin_load_width = 10
-            destination_name_width = 3
-            destination_load_width = 10
-            losses_width = 10
+            #step_width = 5
+            #origin_name_width = 3
+            #origin_load_width = 10
+            #destination_name_width = 3
+            #destination_load_width = 10
+            #losses_width = 10
 
             # Definir los códigos de color
-            GREEN = "\033[92m"
-            BLUE = "\033[94m"
-            RED = "\033[91m"
-            YELLOW = "\033[93m"
-            BOLD = "\033[1m"
-            RESET = "\033[0m"
+            #GREEN = "\033[92m"
+            #BLUE = "\033[94m"
+            #RED = "\033[91m"
+            #YELLOW = "\033[93m"
+            #BOLD = "\033[1m"
+            #RESET = "\033[0m"
 
             # Crear el mensaje formateado
-            message = (
-                f"[DEBUG][Step {iteration:<{step_width}}]"
-                f"{GREEN}[Origin | {origin.name:<{origin_name_width}} | {BOLD}{origin.load:>{origin_load_width}.2f}{RESET} kW]{RESET} --> "
-                f"{BLUE}[Destination | {dst.name:<{destination_name_width}} | {BOLD}{dst.load:>{destination_load_width}.2f}{RESET} kW]{RESET}"
-                f"{RED}[Losses {BOLD}{origin.links[origin.neighbors.index(dst.name)].getLosses(origin.load):>{losses_width}.2f}{RESET} kW]{RESET}"
-            )
+            #message = (
+            #    f"[DEBUG][Step {iteration:<{step_width}}]"
+            #    f"{GREEN}[Origin | {origin.name:<{origin_name_width}} | {BOLD}{origin.load:>{origin_load_width}.2f}{RESET} kW]{RESET} --> "
+            #    f"{BLUE}[Destination | {dst.name:<{destination_name_width}} | {BOLD}{dst.load:>{destination_load_width}.2f}{RESET} kW]{RESET}"
+            #    f"{RED}[Losses {BOLD}{origin.links[origin.neighbors.index(dst.name)].getLosses(origin.load):>{losses_width}.2f}{RESET} kW]{RESET}"
+            #)
 
             # Imprimir el mensaje
-            print(message)
+            #print(message)
 
             # Agregamos la carga de origen a destino
             if withLosses and withCap:
