@@ -549,8 +549,8 @@ class Den2ne(object):
         # Devolvemos el balance total
         return [self.G.nodes[self.root].load, abs_flux]
 
-    def comprobacionCargas(self):
-        """Funcion para ver que nodos se quedan con cargas"""
+    def are_enlclosedLoads(self):
+        """Funcion para ver si hay cargas encerradas"""
         for node in self.G.nodes:
             if self.G.nodes[node].load != 0:
                 if node != self.G.root:
