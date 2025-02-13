@@ -7,7 +7,7 @@ from dataCollector.dataCollector import DataGatherer
 
 
 
-def print_debug_with_color(delta,criteria,scenario,balance,flux,enclosed):
+def print_debug_with_color(delta,criteria,scenario,balance,flux,enclosed, iteration):
     # Vars just for debugging
     # Definir los códigos de color
     GREEN = "\033[92m"
@@ -30,11 +30,12 @@ def print_debug_with_color(delta,criteria,scenario,balance,flux,enclosed):
         f"{RED}[Balance {BOLD}{balance:^{balance_width}.2f}{RESET} kW]{RESET} "
         f"{BLUE}[Flow {BOLD}{flux:^{flow_width}.2f}{RESET} kW]{RESET}"
         f"[ENCLOSED LOADs == {str(enclosed)}]"
+        f"[Nº Interations == {str(iteration)}]"
     )
     # Imprimir el mensaje
     print(message)
 
-def print_debug(delta, criteria, scenario, balance, flux, enclosed):
+def print_debug(delta, criteria, scenario, balance, flux, enclosed, iteration):
     # Definir los anchos de las columnas
     delta_width = 3
     criteria_width = 3
@@ -48,6 +49,7 @@ def print_debug(delta, criteria, scenario, balance, flux, enclosed):
         f"[Balance {balance:^{balance_width}.2f} kW] "
         f"[Flow {flux:^{flow_width}.2f} kW] "
         f"[ENCLOSED LOADs == {str(enclosed)}]"
+        f"[Nº Interations == {str(iteration)}]"
     )
     # Imprimir el mensaje
     print(message)
@@ -104,18 +106,36 @@ def test_ieee123():
 
             # Init Loads
             G_den2ne_alg.updateLoads(loads, delta)
-            G_den2ne_alg.clearSelectedIDs()
-            G_den2ne_alg.selectBestIDs(criterion)
 
             #  ----------------     Ideal balance      ----------------
-            [total_balance_ideal, abs_flux] = G_den2ne_alg.globalBalance(
-                withLosses=False,
-                withCap=False,
-                withDebugPlot=False,
-                positions=positions,
-                path="results/",
-            )
-            print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads())
+            # Var init
+            total_balance_ideal = float()
+            abs_flux = float()
+            iteration = 0
+
+            while True:
+                # Select IDs
+                G_den2ne_alg.clearSelectedIDs()
+                G_den2ne_alg.selectBestIDs(criterion) 
+                 
+                [total_balance_ideal_tmp, abs_flux_tmp] = G_den2ne_alg.globalBalance(
+                    withLosses=False,
+                    withCap=False,
+                    withDebugPlot=False,
+                    positions=positions,
+                    path="results/",
+                )
+
+                # Add curr iteration
+                iteration += 1
+                total_balance_ideal += total_balance_ideal_tmp
+                abs_flux += abs_flux_tmp
+
+                # Check if we have enclosed loads
+                if not G_den2ne_alg.are_enlclosedLoads():
+                    break
+
+            print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -124,20 +144,38 @@ def test_ieee123():
 
             # Re-Init loads
             G_den2ne_alg.updateLoads(loads, delta)
-            G_den2ne_alg.clearSelectedIDs()
-            G_den2ne_alg.selectBestIDs(criterion)
 
             #  ----------------     Withloss balance      ----------------
-            [total_balance_with_losses, abs_flux_with_losses] = (
-                G_den2ne_alg.globalBalance(
-                    withLosses=True,
-                    withCap=False,
-                    withDebugPlot=False,
-                    positions=positions,
-                    path="results/",
+            # Var init
+            total_balance_with_losses = float()
+            abs_flux_with_losses = float()
+            iteration = 0
+
+            while True:
+                # Select IDs
+                G_den2ne_alg.clearSelectedIDs()
+                G_den2ne_alg.selectBestIDs(criterion)
+
+                [total_balance_with_losses_tmp, abs_flux_with_losses_tmp] = (
+                    G_den2ne_alg.globalBalance(
+                        withLosses=True,
+                        withCap=False,
+                        withDebugPlot=False,
+                        positions=positions,
+                        path="results/",
+                    )
                 )
-            )
-            print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads())
+
+                # Add curr iteration
+                iteration += 1
+                total_balance_with_losses += total_balance_with_losses_tmp
+                abs_flux_with_losses += abs_flux_with_losses_tmp
+
+                # Check if we have enclosed loads
+                if not G_den2ne_alg.are_enlclosedLoads():
+                    break
+
+            print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -146,20 +184,38 @@ def test_ieee123():
 
             # Re-Init loads
             G_den2ne_alg.updateLoads(loads, delta)
-            G_den2ne_alg.clearSelectedIDs()
-            G_den2ne_alg.selectBestIDs(criterion)
 
             #  ----------------     Withloss and Cap balance      ----------------
-            [total_balance_with_lossesCap, abs_flux_with_lossesCap] = (
-                G_den2ne_alg.globalBalance(
-                    withLosses=True,
-                    withCap=True,
-                    withDebugPlot=False,
-                    positions=positions,
-                    path="results/",
+            # Var init
+            total_balance_with_lossesCap = float()
+            abs_flux_with_lossesCap = float()
+            iteration = 0
+
+            while True:
+                # Select IDs
+                G_den2ne_alg.clearSelectedIDs()
+                G_den2ne_alg.selectBestIDs(criterion)
+
+                [total_balance_with_lossesCap_tmp, abs_flux_with_lossesCap_tmp] = (
+                    G_den2ne_alg.globalBalance(
+                        withLosses=True,
+                        withCap=True,
+                        withDebugPlot=False,
+                        positions=positions,
+                        path="results/",
+                    )
                 )
-            )
-            print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads())
+
+                # Add curr iteration
+                iteration += 1
+                total_balance_with_lossesCap += total_balance_with_lossesCap_tmp
+                abs_flux_with_lossesCap += abs_flux_with_lossesCap_tmp
+
+                # Check if we have enclosed loads
+                if not G_den2ne_alg.are_enlclosedLoads():
+                    break
+
+            print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # ------------------------ Save data --------------------------
             out_data[delta][criterion] = {
