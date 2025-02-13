@@ -312,14 +312,17 @@ class Den2ne(object):
 
         return total_losses
 
-    def selectBestID_by_power2zero(self):
+    def selectBestID_by_power2zero(self, alpha=0.5, beta=0.5):
         """
         Función para decidir la mejor ID de un nodo cercanía de potecia a cero, al root
         """
         for node in self.G.nodes:
-            power2zero = [self.getTotalPower2Zero(id) for id in self.G.nodes[node].ids]
+            ids = self.G.nodes[node].ids
+            scores = [  alpha * self.getTotalPower2Zero(id) + beta * len(id.hlmac)  for id in ids ]
 
-            self.G.nodes[node].ids[power2zero.index(min(power2zero))].active = True
+            # Seleccionar el ID con el menor score
+            best_index = scores.index(min(scores))
+            ids[best_index].active = True
             self.global_ids.append(self.G.nodes[node].getActiveID())
 
         #self.flowInertia()
@@ -328,21 +331,13 @@ class Den2ne(object):
         """
         Función para calcular la distancia a zero de la suma de la potencia origen y la destino
         """
-        val = 0
-
         # En caso de que seamos el root
         if len(id.hlmac) == 1:
-            val = self.G.nodes[id.getOrigin()].load
+            return self.G.nodes[id.getOrigin()].load
         else:
-            # Origen
             origin_load = self.G.nodes[id.getOrigin()].load
-
-            # Destino
             dst_load = self.G.nodes[id.getNextHop()].load
-
-            val = abs(dst_load + origin_load)
-
-        return val
+            return abs(dst_load + origin_load)
 
     def selectBestID_by_power2zero_with_Losses(self):
         """
