@@ -441,32 +441,6 @@ class Den2ne(object):
 
             cap = self.G.getLinkCapacity(origin.name, dst.name)
 
-            # Añadimos un print para debugear
-            #step_width = 5
-            #origin_name_width = 3
-            #origin_load_width = 10
-            #destination_name_width = 3
-            #destination_load_width = 10
-            #losses_width = 10
-
-            # Definir los códigos de color
-            #GREEN = "\033[92m"
-            #BLUE = "\033[94m"
-            #RED = "\033[91m"
-            #YELLOW = "\033[93m"
-            #BOLD = "\033[1m"
-            #RESET = "\033[0m"
-
-            # Crear el mensaje formateado
-            #message = (
-            #    f"[DEBUG][Step {iteration:<{step_width}}]"
-            #    f"{GREEN}[Origin | {origin.name:<{origin_name_width}} | {BOLD}{origin.load:>{origin_load_width}.2f}{RESET} kW]{RESET} --> "
-            #    f"{BLUE}[Destination | {dst.name:<{destination_name_width}} | {BOLD}{dst.load:>{destination_load_width}.2f}{RESET} kW]{RESET}"
-            #    f"{RED}[Losses {BOLD}{origin.links[origin.neighbors.index(dst.name)].getLosses(origin.load):>{losses_width}.2f}{RESET} kW]{RESET}"
-            #)
-
-            # Imprimir el mensaje
-            #print(message)
 
             # Agregamos la carga de origen a destino
             if withLosses and withCap:
