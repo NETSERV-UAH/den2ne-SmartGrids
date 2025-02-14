@@ -4,7 +4,7 @@ import pathlib
 from graph.graph import Graph
 from den2ne.den2neALG import Den2ne
 from dataCollector.dataCollector import DataGatherer
-
+import time
 
 
 def print_debug_with_color(delta,criteria,scenario,balance,flux,enclosed, iteration):
@@ -112,6 +112,7 @@ def test_ieee123():
             total_balance_ideal = float()
             abs_flux = float()
             iteration = 0
+            start_ideal = time.time() * 1000
 
             while True:
                 # Select IDs
@@ -135,6 +136,7 @@ def test_ieee123():
                 if not G_den2ne_alg.are_enlclosedLoads():
                     break
 
+            end_ideal = time.time() * 1000
             print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # Genearación de informes
@@ -150,6 +152,7 @@ def test_ieee123():
             total_balance_with_losses = float()
             abs_flux_with_losses = float()
             iteration = 0
+            start_wloss = time.time() * 1000
 
             while True:
                 # Select IDs
@@ -174,7 +177,7 @@ def test_ieee123():
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
                     break
-
+            end_wloss = time.time() * 1000
             print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # Genearación de informes
@@ -190,6 +193,7 @@ def test_ieee123():
             total_balance_with_lossesCap = float()
             abs_flux_with_lossesCap = float()
             iteration = 0
+            start_wlossCap = time.time() * 1000
 
             while True:
                 # Select IDs
@@ -215,6 +219,7 @@ def test_ieee123():
                 if not G_den2ne_alg.are_enlclosedLoads():
                     break
 
+            end_wlossCap = time.time() * 1000
             print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration)
 
             # ------------------------ Save data --------------------------
@@ -225,6 +230,9 @@ def test_ieee123():
                 "abs_flux_with_losses": abs_flux_with_losses,
                 "total_balance_with_lossesCap": total_balance_with_lossesCap,
                 "abs_flux_with_lossesCap": abs_flux_with_lossesCap,
+                "timestamp_ideal": end_ideal - start_ideal,
+                "timestamp_wloss": end_wloss - start_wloss,
+                "timestamp_wlossCap": end_wlossCap - start_wlossCap,
             }
 
             # Genearación de informes
@@ -241,20 +249,15 @@ def test_ieee123():
                 f"results/{topo_name}/csv/swConfig_d{delta}_c{criterion}.csv"
             )
 
-        # Exportamos los datos para un valor de delta
+        # Exportar datos
         with open(f"results/{topo_name}/csv/outdata_d{delta}.csv", "w") as file:
-            file.write(
-                "criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap\n"
-            )
+            file.write("criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap,timestamp_ideal,timestamp_wloss,timestamp_wlossCap\n")
             for criterion in out_data[delta]:
                 file.write(
                     f'{criterion},{out_data[delta][criterion]["total_balance_ideal"]},{out_data[delta][criterion]["abs_flux"]},'
-                )
-                file.write(
-                    f'{out_data[delta][criterion]["total_balance_with_losses"]}, {out_data[delta][criterion]["abs_flux_with_losses"]},'
-                )
-                file.write(
-                    f'{out_data[delta][criterion]["total_balance_with_lossesCap"]},{out_data[delta][criterion]["abs_flux_with_lossesCap"]}\n'
+                    f'{out_data[delta][criterion]["total_balance_with_losses"]},{out_data[delta][criterion]["abs_flux_with_losses"]},'
+                    f'{out_data[delta][criterion]["total_balance_with_lossesCap"]},{out_data[delta][criterion]["abs_flux_with_lossesCap"]},'
+                    f'{out_data[delta][criterion]["timestamp_ideal"]},{out_data[delta][criterion]["timestamp_wloss"]},{out_data[delta][criterion]["timestamp_wlossCap"]}\n'
                 )
 
     G_den2ne_alg.write_ids_report(f"results/{topo_name}/reports/report_ids.txt")
