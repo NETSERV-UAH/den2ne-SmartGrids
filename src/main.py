@@ -115,15 +115,11 @@ def test_ieee123():
             start_ideal = time.time() * 1000
 
             while True:
-                # Reset tmp vars
-                total_balance_ideal_tmp = 0
-                abs_flux_tmp = 0
-
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion) 
                  
-                [total_balance_ideal_tmp, abs_flux_tmp] = G_den2ne_alg.globalBalance(
+                [total_balance_ideal, abs_flux] = G_den2ne_alg.globalBalance(
                     withLosses=False,
                     withCap=False,
                     withDebugPlot=False,
@@ -133,8 +129,6 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
-                total_balance_ideal += total_balance_ideal_tmp
-                abs_flux += abs_flux_tmp
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
@@ -159,15 +153,12 @@ def test_ieee123():
             start_wloss = time.time() * 1000
 
             while True:
-                # Reset tmp vars
-                total_balance_with_losses_tmp = 0
-                abs_flux_with_losses_tmp = 0
                 
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
 
-                [total_balance_with_losses_tmp, abs_flux_with_losses_tmp] = (
+                [total_balance_with_losses, abs_flux_with_losses] = (
                     G_den2ne_alg.globalBalance(
                         withLosses=True,
                         withCap=False,
@@ -179,8 +170,6 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
-                total_balance_with_losses += total_balance_with_losses_tmp
-                abs_flux_with_losses += abs_flux_with_losses_tmp
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
@@ -204,15 +193,11 @@ def test_ieee123():
             start_wlossCap = time.time() * 1000
 
             while True:
-                # Reset tmp vars
-                total_balance_with_lossesCap_tmp = 0
-                abs_flux_with_lossesCap_tmp = 0
-
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
 
-                [total_balance_with_lossesCap_tmp, abs_flux_with_lossesCap_tmp] = (
+                [total_balance_with_lossesCap, abs_flux_with_lossesCap] = (
                     G_den2ne_alg.globalBalance(
                         withLosses=True,
                         withCap=True,
@@ -224,8 +209,6 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
-                total_balance_with_lossesCap += total_balance_with_lossesCap_tmp
-                abs_flux_with_lossesCap += abs_flux_with_lossesCap_tmp
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
