@@ -115,6 +115,10 @@ def test_ieee123():
             start_ideal = time.time() * 1000
 
             while True:
+                # Reset tmp vars
+                total_balance_ideal_tmp = 0
+                abs_flux_tmp = 0
+
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion) 
@@ -155,6 +159,10 @@ def test_ieee123():
             start_wloss = time.time() * 1000
 
             while True:
+                # Reset tmp vars
+                total_balance_with_losses_tmp = 0
+                abs_flux_with_losses_tmp = 0
+                
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
@@ -196,6 +204,10 @@ def test_ieee123():
             start_wlossCap = time.time() * 1000
 
             while True:
+                # Reset tmp vars
+                total_balance_with_lossesCap_tmp = 0
+                abs_flux_with_lossesCap_tmp = 0
+
                 # Select IDs
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
