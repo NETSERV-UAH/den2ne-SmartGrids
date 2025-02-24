@@ -4,7 +4,7 @@
 %
 %   [+] Fecha:  14 Feb 2025
 
-function plotDeltaLoads_1(delta, results_path)
+function plotDeltaLoads(delta, results_path)
 
     % Obtenemos los datos del fichero csv indicado
     file_path = fullfile(results_path, strcat("csv/outdata_d", num2str(delta), ".csv"));
@@ -25,7 +25,10 @@ function plotDeltaLoads_1(delta, results_path)
     ylabel("Potencia (kW)")
     legend("Ideal", "Con pérdidas", "Con pérdidas y capacidades", 'Location', 'southoutside', 'NumColumns', 3)
     set(gca,'XTickLabel', {'Hops', 'Pérdidas', 'Potencia 0', 'Potencia 0 + Pérdidas'});
-    print(gcf, fullfile(results_path, strcat('fig/powerBalance_d', num2str(delta))), '-dpdf', '-r0');
+
+    % Exportamos las cosas a lo nico style :)
+    exportgraphics(h, fullfile(results_path, strcat('fig/powerBalance_d', num2str(delta), '.pdf')));
+
 
     % Flujo absoluto de potencia
     data_power_abs = data(:, [3 5 7]);
@@ -37,7 +40,9 @@ function plotDeltaLoads_1(delta, results_path)
     ylabel("Potencia (kW)")
     legend("Ideal", "Con pérdidas", "Con pérdidas y capacidades", 'Location', 'southoutside', 'NumColumns', 3)
     set(gca,'XTickLabel', {'Hops', 'Pérdidas', 'Potencia 0', 'Potencia 0 + Pérdidas'});
-    print(gcf, fullfile(results_path, strcat('fig/powerAbsFlux_d', num2str(delta))), '-dpdf', '-r0');
+
+    % Exportamos las cosas a lo nico style :)
+    exportgraphics(h, fullfile(results_path, strcat('fig/powerAbsFlux_d', num2str(delta), '.pdf')));
     
     % Tiempos extraídos del CSV
     data_timestamps = data(:, [8 9 10]);
@@ -49,5 +54,7 @@ function plotDeltaLoads_1(delta, results_path)
     ylabel("Tiempo (ms)")
     legend("Ideal", "Con pérdidas", "Con pérdidas y capacidades", 'Location', 'southoutside', 'NumColumns', 3)
     set(gca,'XTickLabel', {'Hops', 'Pérdidas', 'Potencia 0', 'Potencia 0 + Pérdidas'});
-    print(gcf, fullfile(results_path, strcat('fig/timestamps_d', num2str(delta))), '-dpdf', '-r0');
+
+    % Exportamos las cosas a lo nico style :)
+    exportgraphics(h, fullfile(results_path, strcat('fig/timestamps_d', num2str(delta), '.pdf')));
 end
