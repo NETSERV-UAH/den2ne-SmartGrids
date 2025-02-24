@@ -50,8 +50,8 @@ function plotTemporalBalance(init, fin, result_path)
         title(["Power Balance - " case_titles{j}]);
         legend('Location', 'best');
         hold off;
-        
-        % Guardar la figura
-        print(h, fullfile(result_path, strcat('fig/powerBalance_', case_titles{j})), '-dpdf', '-r300');
+
+        % Exportamos las cosas a lo nico style :)
+        exportgraphics(h, fullfile(result_path, strcat('fig/powerBalance_', case_titles{j}, '.pdf')));
     end
 end
