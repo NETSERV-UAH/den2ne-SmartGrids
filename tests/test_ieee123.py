@@ -8,8 +8,8 @@ class TestIEEE123(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.loads = DataGatherer.getLoads("src/data/loads/loads_v2.csv", 3)
-        cls.edges = DataGatherer.getEdges("src/data/links/links.csv")
-        cls.edges_conf = DataGatherer.getEdges_Config("src/data/links_config.csv")
+        cls.edges = DataGatherer.getEdges("src/data/links.csv")
+        cls.edges_conf = DataGatherer.getEdges_Config("src/data/links/links_config.csv")
         cls.sw_edges = DataGatherer.getSwitches("src/data/switches.csv")
         cls.positions = DataGatherer.getPositions("src/data/node_positions.csv")
         
