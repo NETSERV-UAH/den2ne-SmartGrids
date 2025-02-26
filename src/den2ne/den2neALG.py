@@ -420,6 +420,9 @@ class Den2ne(object):
         # Vamos a llevar la cuenta de las iteraciones
         iteration = 0
 
+        # Vamos a usar una var aux para devolver la potencia
+        ret_load = float()
+
         # Mientras haya IDs != del root -> Vamos a trabajar con listado global como si fuera una pila
         while len(self.global_ids) > 1:
 
@@ -511,7 +514,10 @@ class Den2ne(object):
 
 
         # Devolvemos el balance total
-        return [self.G.nodes[self.root].load, abs_flux]
+        ret_load = self.G.nodes[self.root].load
+        self.G.nodes[self.root].load = 0.0
+
+        return [ret_load, abs_flux]
 
     def are_enlclosedLoads(self):
         """Funcion para ver si hay cargas encerradas"""
