@@ -15,6 +15,7 @@ class Den2ne(object):
     CRITERION_LINKS_LOSSES = 2
     CRITERION_POWER_TO_ZERO = 3
     CRITERION_POWER_TO_ZERO_WITH_LOSSES = 4
+    CRITERION_LOW_LINKS_LOSSES = 5
 
     # Fijamos el número máximo de IDs por nodo
     IDS_MAX = 10
@@ -226,6 +227,9 @@ class Den2ne(object):
         elif Den2ne.CRITERION_POWER_TO_ZERO_WITH_LOSSES == criterion:
             self.selectBestID_by_power2zero_with_Losses()
 
+        elif Den2ne.CRITERION_LOW_LINKS_LOSSES == criterion:
+            self.selectBestID_by_lowLinks_Losses()
+
         # Por último, vamos a ver el las dependencias con los switchs y activar aquellos que sean necesarios
         dependences = list(
             set(sum([active_ids.depends_on for active_ids in self.global_ids], []))
@@ -287,6 +291,19 @@ class Den2ne(object):
             self.global_ids.append(self.G.nodes[node].getActiveID())
 
         #self.flowInertia()
+
+    def selectBestID_by_lowLinks_Losses(self, alpha=0.5, beta=0.5):
+        """
+        Función para decidir la mejor ID de un nodo en función de sus perdidas al root
+        """
+        for node in self.G.nodes:
+            ids = self.G.nodes[node].ids
+            scores = [ alpha * self.getTotalLinks_Losses(id) + beta * len(id.hlmac) for id in ids]
+
+            # Seleccionar el ID con el menor score
+            best_index = scores.index(min(scores))
+            ids[best_index].active = True
+            self.global_ids.append(self.G.nodes[node].getActiveID())
 
     def getTotalLinks_Losses(self, id):
         """
