@@ -268,7 +268,7 @@ def test_ieee123_fullrandom():
     criteria = [
         Den2ne.CRITERION_NUM_HOPS,
         Den2ne.CRITERION_DISTANCE,
-        Den2ne.CRITERION_LINKS_LOSSES,
+        Den2ne.CRITERION_LOW_LINKS_LOSSES,
         Den2ne.CRITERION_POWER_TO_ZERO,
         Den2ne.CRITERION_POWER_TO_ZERO_WITH_LOSSES,
     ]
@@ -276,9 +276,11 @@ def test_ieee123_fullrandom():
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
     edges = DataGatherer.getEdges("data/links.csv")
-    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_100.csv")
+    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_12_5.csv")
     sw_edges = DataGatherer.getSwitches("data/switches.csv")
     positions = DataGatherer.getPositions("data/node_positions.csv")
+
+    #nodes_to_test = ['150', '251', '610', '451', '47', '350', '1', '7', '2', '27']
 
     for node in positions:
 
