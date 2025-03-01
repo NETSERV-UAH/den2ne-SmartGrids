@@ -381,7 +381,7 @@ def test_ieee123_fullrandom():
                     # Add curr iteration
                     iteration += 1
                     total_balance_with_losses += total_balance_with_losses_ret
-                    abs_flux_with_losses_ret += abs_flux_with_losses_ret
+                    abs_flux_with_losses += abs_flux_with_losses_ret
 
                     # Check if we have enclosed loads
                     if not G_den2ne_alg.are_enlclosedLoads():
