@@ -14,8 +14,9 @@ if ~ismember(col_name, data.Properties.VariableNames)
 end
 
 % Crear variaciones de R
-scales = [1, 0.5, 0.25, 0.125]; 
-filenames = {'links_config_100.csv', 'links_config_50.csv', 'links_config_25.csv', 'links_config_12_5.csv'};
+scales = [1, 0.5, 0.25, 0.125 0.05 0.01 0.001 0.0001]; 
+filenames = {'links_config_100.csv', 'links_config_50.csv', 'links_config_25.csv', 'links_config_12_5.csv'...
+    'links_config_5.csv', 'links_config_1.csv', 'links_config_0_1.csv', 'links_config_0_0_1.csv'};
 
 for i = 1:length(scales)
     modified_data = data;
