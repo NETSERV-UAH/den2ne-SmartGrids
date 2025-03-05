@@ -65,7 +65,7 @@ def test_ieee123():
     criteria = [
         Den2ne.CRITERION_NUM_HOPS,
         Den2ne.CRITERION_DISTANCE,
-        Den2ne.CRITERION_LINKS_LOSSES,
+        Den2ne.CRITERION_LOW_LINKS_LOSSES,
         Den2ne.CRITERION_POWER_TO_ZERO,
         Den2ne.CRITERION_POWER_TO_ZERO_WITH_LOSSES,
     ]
@@ -80,7 +80,7 @@ def test_ieee123():
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
     edges = DataGatherer.getEdges("data/links.csv")
-    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_12_5.csv")
+    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_5.csv")
     sw_edges = DataGatherer.getSwitches("data/switches.csv")
     positions = DataGatherer.getPositions("data/node_positions.csv")
 
@@ -119,7 +119,7 @@ def test_ieee123():
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion) 
                  
-                [total_balance_ideal, abs_flux] = G_den2ne_alg.globalBalance(
+                [total_balance_ideal_ret, abs_flux_ret] = G_den2ne_alg.globalBalance(
                     withLosses=False,
                     withCap=False,
                     withDebugPlot=False,
@@ -129,6 +129,8 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
+                total_balance_ideal += total_balance_ideal_ret
+                abs_flux += abs_flux_ret
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
@@ -158,7 +160,7 @@ def test_ieee123():
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
 
-                [total_balance_with_losses, abs_flux_with_losses] = (
+                [total_balance_with_losses_ret, abs_flux_with_losses_ret] = (
                     G_den2ne_alg.globalBalance(
                         withLosses=True,
                         withCap=False,
@@ -170,6 +172,8 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
+                total_balance_with_losses += total_balance_with_losses_ret
+                abs_flux_with_losses += abs_flux_with_losses_ret
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
@@ -197,7 +201,7 @@ def test_ieee123():
                 G_den2ne_alg.clearSelectedIDs()
                 G_den2ne_alg.selectBestIDs(criterion)
 
-                [total_balance_with_lossesCap, abs_flux_with_lossesCap] = (
+                [total_balance_with_lossesCap_ret, abs_flux_with_lossesCap_ret] = (
                     G_den2ne_alg.globalBalance(
                         withLosses=True,
                         withCap=True,
@@ -209,6 +213,8 @@ def test_ieee123():
 
                 # Add curr iteration
                 iteration += 1
+                total_balance_with_lossesCap += total_balance_with_lossesCap_ret
+                abs_flux_with_lossesCap += abs_flux_with_lossesCap_ret
 
                 # Check if we have enclosed loads
                 if not G_den2ne_alg.are_enlclosedLoads():
@@ -473,4 +479,4 @@ def test_ieee123_fullrandom():
 
 
 if __name__ == "__main__":
-    test_ieee123_fullrandom()
+    test_ieee123()
