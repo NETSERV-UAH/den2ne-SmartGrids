@@ -13,7 +13,7 @@ root_folders = dir(fullfile(base_path, "root_*"));
 for i = 1:length(root_folders)
     root_path = fullfile(base_path, root_folders(i).name);
     disp("Procesando: " + root_path);
-    
+
     close all
     plotDeltaLoads(0, root_path);
     plotRangeLoads(0, 95, root_path);
@@ -57,3 +57,28 @@ plotBarWithErrors(mean(data_avg_all(:, [2 4 6], :), 3), sem_all(:, [2 4 6], :), 
 plotBarWithErrors(mean(data_avg_all(:, [3 5 7], :), 3), sem_all(:, [3 5 7], :), result_path, 'powerAbsFlux_all_roots.pdf', "Flujo absoluto de potencia (Todos los Roots)", "Potencia (kW)");
 plotBarWithErrors(mean(data_avg_all(:, [8 9 10], :), 3), sem_all(:, [8 9 10], :), result_path, 'timestamps_all_roots.pdf', "Tiempos de cálculo (Todos los Roots)", "Tiempo (ms)");
 
+function plotBarWithErrors(data_avg, sem, result_path, filename, title_str, ylabel_str)
+    h = figure();
+    set(gcf, 'Position', [100 100 900 700]);
+    bar_handle = bar(data_avg, 0.6, 'grouped', 'FaceColor', 'flat'); hold on;
+    
+    % Error bars
+    ngroups = size(data_avg, 1);
+    nbars = size(data_avg, 2);
+    groupwidth = min(0.6, nbars/(nbars + 1.5));
+    
+    for i = 1:nbars
+        x = bar_handle(i).XEndPoints;
+        errorbar(x, data_avg(:, i), sem(:, i), 'k', 'linestyle', 'none', 'CapSize', 10);
+    end
+    
+    grid on;
+    title(title_str, 'FontSize', 16);
+    ylabel(ylabel_str);
+    legend("Ideal", "Con pérdidas", "Con pérdidas y capacidades", 'Location', 'southoutside', 'NumColumns', 3);
+    set(gca, 'XTickLabel', {'Hops', 'Pérdidas', 'Potencia 0', 'Potencia 0 + Pérdidas'});
+    hold off;
+    
+    % Exportamos la gráfica
+    exportgraphics(h, fullfile(result_path, strcat('fig/', filename)));
+end
