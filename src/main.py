@@ -80,7 +80,7 @@ def test_ieee123():
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
     edges = DataGatherer.getEdges("data/links.csv")
-    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_5.csv")
+    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
     sw_edges = DataGatherer.getSwitches("data/switches.csv")
     positions = DataGatherer.getPositions("data/node_positions.csv")
 
@@ -111,7 +111,7 @@ def test_ieee123():
             # Var init
             total_balance_ideal = float()
             abs_flux = float()
-            iteration = 0
+            iteration_ideal = 0
             start_ideal = time.time() * 1000
 
             while True:
@@ -128,7 +128,7 @@ def test_ieee123():
                 )
 
                 # Add curr iteration
-                iteration += 1
+                iteration_ideal += 1
                 total_balance_ideal += total_balance_ideal_ret
                 abs_flux += abs_flux_ret
 
@@ -137,7 +137,7 @@ def test_ieee123():
                     break
 
             end_ideal = time.time() * 1000
-            print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration)
+            print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration_ideal)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -151,7 +151,7 @@ def test_ieee123():
             # Var init
             total_balance_with_losses = float()
             abs_flux_with_losses = float()
-            iteration = 0
+            iteration_wloss = 0
             start_wloss = time.time() * 1000
 
             while True:
@@ -171,7 +171,7 @@ def test_ieee123():
                 )
 
                 # Add curr iteration
-                iteration += 1
+                iteration_wloss += 1
                 total_balance_with_losses += total_balance_with_losses_ret
                 abs_flux_with_losses += abs_flux_with_losses_ret
 
@@ -179,7 +179,7 @@ def test_ieee123():
                 if not G_den2ne_alg.are_enlclosedLoads():
                     break
             end_wloss = time.time() * 1000
-            print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration)
+            print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration_wloss)
 
             # Genearación de informes
             G_den2ne_alg.write_loads_report(
@@ -193,7 +193,7 @@ def test_ieee123():
             # Var init
             total_balance_with_lossesCap = float()
             abs_flux_with_lossesCap = float()
-            iteration = 0
+            iteration_wlossCap = 0
             start_wlossCap = time.time() * 1000
 
             while True:
@@ -212,7 +212,7 @@ def test_ieee123():
                 )
 
                 # Add curr iteration
-                iteration += 1
+                iteration_wlossCap += 1
                 total_balance_with_lossesCap += total_balance_with_lossesCap_ret
                 abs_flux_with_lossesCap += abs_flux_with_lossesCap_ret
 
@@ -221,7 +221,7 @@ def test_ieee123():
                     break
 
             end_wlossCap = time.time() * 1000
-            print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration)
+            print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration_wlossCap)
 
             # ------------------------ Save data --------------------------
             out_data[delta][criterion] = {
@@ -234,6 +234,9 @@ def test_ieee123():
                 "timestamp_ideal": end_ideal - start_ideal,
                 "timestamp_wloss": end_wloss - start_wloss,
                 "timestamp_wlossCap": end_wlossCap - start_wlossCap,
+                "iteration_ideal": iteration_ideal,
+                "iteration_wloss": iteration_wloss,
+                "iteration_wlossCap": iteration_wlossCap,
             }
 
             # Genearación de informes
@@ -252,13 +255,13 @@ def test_ieee123():
 
         # Exportar datos
         with open(f"results/{topo_name}/csv/outdata_d{delta}.csv", "w") as file:
-            file.write("criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap,timestamp_ideal,timestamp_wloss,timestamp_wlossCap\n")
+            file.write("criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap,timestamp_ideal,timestamp_wloss,timestamp_wlossCap,iteration_ideal,iteration_wloss,iteration_wlossCap\n")
             for criterion in out_data[delta]:
                 file.write(
                     f'{criterion},{out_data[delta][criterion]["total_balance_ideal"]},{out_data[delta][criterion]["abs_flux"]},'
                     f'{out_data[delta][criterion]["total_balance_with_losses"]},{out_data[delta][criterion]["abs_flux_with_losses"]},'
                     f'{out_data[delta][criterion]["total_balance_with_lossesCap"]},{out_data[delta][criterion]["abs_flux_with_lossesCap"]},'
-                    f'{out_data[delta][criterion]["timestamp_ideal"]},{out_data[delta][criterion]["timestamp_wloss"]},{out_data[delta][criterion]["timestamp_wlossCap"]}\n'
+                    f'{out_data[delta][criterion]["timestamp_ideal"]},{out_data[delta][criterion]["timestamp_wloss"]},{out_data[delta][criterion]["timestamp_wlossCap"]},{out_data[delta][criterion]["iteration_ideal"]},{out_data[delta][criterion]["iteration_wloss"]},{out_data[delta][criterion]["iteration_wlossCap"]}\n'
                 )
 
     G_den2ne_alg.write_ids_report(f"results/{topo_name}/reports/report_ids.txt")
@@ -282,7 +285,7 @@ def test_ieee123_fullrandom():
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
     edges = DataGatherer.getEdges("data/links.csv")
-    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_12_5.csv")
+    edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
     sw_edges = DataGatherer.getSwitches("data/switches.csv")
     positions = DataGatherer.getPositions("data/node_positions.csv")
 
@@ -325,7 +328,7 @@ def test_ieee123_fullrandom():
                 # Var init
                 total_balance_ideal = float()
                 abs_flux = float()
-                iteration = 0
+                iteration_ideal = 0
                 start_ideal = time.time() * 1000
 
                 while True:
@@ -342,7 +345,7 @@ def test_ieee123_fullrandom():
                     )
 
                     # Add curr iteration
-                    iteration += 1
+                    iteration_ideal += 1
                     total_balance_ideal += total_balance_ideal_ret
                     abs_flux += abs_flux_ret
 
@@ -351,7 +354,7 @@ def test_ieee123_fullrandom():
                         break
 
                 end_ideal = time.time() * 1000
-                print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration)
+                print_debug(delta,criterion,"IDEAL",total_balance_ideal,abs_flux,G_den2ne_alg.are_enlclosedLoads(), iteration_ideal)
 
                 # Genearación de informes
                 G_den2ne_alg.write_loads_report(
@@ -365,7 +368,7 @@ def test_ieee123_fullrandom():
                 # Var init
                 total_balance_with_losses = float()
                 abs_flux_with_losses = float()
-                iteration = 0
+                iteration_wloss = 0
                 start_wloss = time.time() * 1000
 
                 while True:
@@ -385,7 +388,7 @@ def test_ieee123_fullrandom():
                     )
 
                     # Add curr iteration
-                    iteration += 1
+                    iteration_wloss += 1
                     total_balance_with_losses += total_balance_with_losses_ret
                     abs_flux_with_losses += abs_flux_with_losses_ret
 
@@ -393,7 +396,7 @@ def test_ieee123_fullrandom():
                     if not G_den2ne_alg.are_enlclosedLoads():
                         break
                 end_wloss = time.time() * 1000
-                print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration)
+                print_debug(delta,criterion,"LOSS",total_balance_with_losses,abs_flux_with_losses,G_den2ne_alg.are_enlclosedLoads(), iteration_wloss)
 
                 # Genearación de informes
                 G_den2ne_alg.write_loads_report(
@@ -407,7 +410,7 @@ def test_ieee123_fullrandom():
                 # Var init
                 total_balance_with_lossesCap = float()
                 abs_flux_with_lossesCap = float()
-                iteration = 0
+                iteration_wlossCap = 0
                 start_wlossCap = time.time() * 1000
 
                 while True:
@@ -426,7 +429,7 @@ def test_ieee123_fullrandom():
                     )
 
                     # Add curr iteration
-                    iteration += 1
+                    iteration_wlossCap += 1
                     total_balance_with_lossesCap += total_balance_with_lossesCap_ret
                     abs_flux_with_lossesCap += abs_flux_with_lossesCap_ret
 
@@ -435,7 +438,7 @@ def test_ieee123_fullrandom():
                         break
 
                 end_wlossCap = time.time() * 1000
-                print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration)
+                print_debug(delta,criterion,"LOSS_CAP",total_balance_with_lossesCap,abs_flux_with_lossesCap,G_den2ne_alg.are_enlclosedLoads(), iteration_wlossCap)
 
                 # ------------------------ Save data --------------------------
                 out_data[delta][criterion] = {
@@ -448,6 +451,9 @@ def test_ieee123_fullrandom():
                     "timestamp_ideal": end_ideal - start_ideal,
                     "timestamp_wloss": end_wloss - start_wloss,
                     "timestamp_wlossCap": end_wlossCap - start_wlossCap,
+                    "iteration_ideal": iteration_ideal,
+                    "iteration_wloss": iteration_wloss,
+                    "iteration_wlossCap": iteration_wlossCap,
                 }
 
                 # Genearación de informes
@@ -466,17 +472,17 @@ def test_ieee123_fullrandom():
 
             # Exportar datos
             with open(f"results/{topo_name}/root_{curr_root}/csv/outdata_d{delta}.csv", "w") as file:
-                file.write("criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap,timestamp_ideal,timestamp_wloss,timestamp_wlossCap\n")
+                file.write("criterion,power_ideal,abs_ideal,power_wloss,abs_wloss,power_wlossCap,abs_wlossCap,timestamp_ideal,timestamp_wloss,timestamp_wlossCap,iteration_ideal,iteration_wloss,iteration_wlossCap\n")
                 for criterion in out_data[delta]:
                     file.write(
                         f'{criterion},{out_data[delta][criterion]["total_balance_ideal"]},{out_data[delta][criterion]["abs_flux"]},'
                         f'{out_data[delta][criterion]["total_balance_with_losses"]},{out_data[delta][criterion]["abs_flux_with_losses"]},'
                         f'{out_data[delta][criterion]["total_balance_with_lossesCap"]},{out_data[delta][criterion]["abs_flux_with_lossesCap"]},'
-                        f'{out_data[delta][criterion]["timestamp_ideal"]},{out_data[delta][criterion]["timestamp_wloss"]},{out_data[delta][criterion]["timestamp_wlossCap"]}\n'
+                        f'{out_data[delta][criterion]["timestamp_ideal"]},{out_data[delta][criterion]["timestamp_wloss"]},{out_data[delta][criterion]["timestamp_wlossCap"]},{out_data[delta][criterion]["iteration_ideal"]},{out_data[delta][criterion]["iteration_wloss"]},{out_data[delta][criterion]["iteration_wlossCap"]}\n'
                     )
 
         G_den2ne_alg.write_ids_report(f"results/{topo_name}/root_{curr_root}/reports/report_ids.txt")
 
 
 if __name__ == "__main__":
-    test_ieee123()
+    test_ieee123_fullrandom()

@@ -12,7 +12,7 @@ class Link(object):
 
     # Vamos a definir constantes que son propias del enlace
     VOLTAGE = 415  # Volts
-    SWITCH_R = 0.1  # Ohms
+    SWITCH_R = 0.1*0.08  # Ohms
 
     def __init__(self, node_a, node_b, type_link, state, dist, conf, coef_r, i_max):
         """
@@ -28,7 +28,7 @@ class Link(object):
 
         # Según nos han indicado los enlaces de tipo switch no tienen dist, cap
         if self.type != Link.SWITCH:
-            self.capacity = (i_max * Link.VOLTAGE) / 1000  # kW
+            self.capacity = ((i_max * 3.0) * Link.VOLTAGE) / 1000  # kW
             self.coef_R = coef_r  # Ohms/km
         else:
             self.capacity = None
