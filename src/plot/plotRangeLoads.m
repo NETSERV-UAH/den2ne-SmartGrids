@@ -7,7 +7,7 @@
 function plotRangeLoads(init, fin, result_path)
     
     % Preparamos la matriz de datos 
-    data3d = zeros(4, 10, fin-init+1); % Se reduce a 4 criterios
+    data3d = zeros(4, 13, fin-init+1); % Se reduce a 4 criterios
     
     % Obtenemos los datos de los ficheros csv indicados
     for i = init:fin
@@ -40,6 +40,13 @@ function plotRangeLoads(init, fin, result_path)
     
     % Pintamos tiempos de cálculo
     plotBarWithErrors(time_avg, sem_time, result_path, 'timestamps_global.pdf', "Tiempos de cálculo", "Tiempo (ms)");
+
+    % Obtenemos la media y el error estándar para las iteraciones
+    iter_avg = mean(data3d(:, [11 12 13], :), 3);
+    sem_iter = std(data3d(:, [11 12 13], :), [], 3) / sqrt(fin-init+1);
+    
+    % Pintamos tiempos de cálculo
+    plotBarWithErrors(iter_avg, sem_iter, result_path, 'iter_global.pdf', "Iteraciones por criterio", "Num iter.");
 end
 
 function plotBarWithErrors(data_avg, sem, result_path, filename, title_str, ylabel_str)
