@@ -58,7 +58,7 @@ h=figure('Position', [10 10 800 700]);
 subplot(3, 1, 1);
 plot(time_vector, con_vector, 'r', 'LineWidth', 1.5);
 title('Consumption each 15 minutes');
-xlabel('Time of the day');
+%xlabel('Time of the day');
 ylabel('Consumption (kW)');
 ylim([700,1700]);
 xlim([0,24]);
@@ -68,7 +68,7 @@ grid on;
 subplot(3, 1, 2);
 plot(time_vector, gen_vector, 'g', 'LineWidth', 1.5);
 title('Generation each 15 minutes');
-xlabel('Time of the day');
+%xlabel('Time of the day');
 ylabel('Generation (kW)');
 xlim([0,24]);
 grid on;
@@ -94,7 +94,7 @@ ylim([-800,500]);
 grid on;
 hold off;
 
-sgtitle('Consumption, Generation and Balance within 24 hours');
+%sgtitle('Consumption, Generation and Balance within 24 hours');
 exportgraphics(h,"loads_global_view.pdf")
 
 % Third, lets plot uG needs
