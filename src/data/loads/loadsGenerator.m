@@ -52,14 +52,16 @@ balance_vector = gen_vector - con_vector;
 time_vector = linspace(0, 24, 96);
 
 % Let's plot :)
-figure();
+h=figure('Position', [10 10 800 700]);
 
 % con
 subplot(3, 1, 1);
-plot(time_vector, con_vector, 'b', 'LineWidth', 1.5);
+plot(time_vector, con_vector, 'r', 'LineWidth', 1.5);
 title('Consumption each 15 minutes');
 xlabel('Time of the day');
 ylabel('Consumption (kW)');
+ylim([700,1700]);
+xlim([0,24]);
 grid on;
 
 % gen
@@ -68,18 +70,32 @@ plot(time_vector, gen_vector, 'g', 'LineWidth', 1.5);
 title('Generation each 15 minutes');
 xlabel('Time of the day');
 ylabel('Generation (kW)');
+xlim([0,24]);
 grid on;
 
 % balance
 subplot(3, 1, 3);
-plot(time_vector, balance_vector, 'r', 'LineWidth', 1.5);
-title('Balance (Generation - Consumption)');
-xlabel('Time of the day');
+% plot(time_vector, balance_vector, 'r', 'LineWidth', 1.5);
+% title('Balance (Generation - Consumption)');
+% xlabel('Time of the day');
+% ylabel('Balance (kW)');
+% grid on;
+hold on;
+area(time_vector, balance_vector .* (balance_vector >= 0), 'FaceColor', 'green', 'EdgeColor', 'none');
+area(time_vector, balance_vector .* (balance_vector < 0), 'FaceColor', 'red', 'EdgeColor', 'none');
+plot(time_vector, balance_vector, 'k--', 'LineWidth', 1.5)
+yline(0, 'k', 'LineWidth', 3);
+title('Balance (Generation - Consumption) over 24 Hours');
+xlabel('Time of Day (hours)');
 ylabel('Balance (kW)');
+xlim([0,24]);
+ylim([-800,500]);
+%legend({'Generation (Positive Balance)', 'Consumption (Negative Balance)', 'Balance Line'}, 'Location', 'best');
 grid on;
+hold off;
 
 sgtitle('Consumption, Generation and Balance within 24 hours');
-
+exportgraphics(h,"loads_global_view.pdf")
 
 % Third, lets plot uG needs
 figure();
