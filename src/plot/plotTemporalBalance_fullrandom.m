@@ -28,7 +28,7 @@ num_deltas = 96; % Asumiendo 96 intervalos de tiempo
 num_criteria = 5; % Cantidad de criterios seleccionados
 
 % Matriz para almacenar los datos de todos los roots
-data3d_all_roots = zeros(num_criteria, 10, num_deltas, num_roots);
+data3d_all_roots = zeros(num_criteria, 13, num_deltas, num_roots);
 
 for r = 1:num_roots
     root_path = fullfile(base_path, root_folders(r).name);
@@ -49,7 +49,7 @@ data_avg_all = mean(data3d_all_roots, 4);
 
 % Cabecera 
 header = ["criterion", "power_ideal", "abs_ideal", "power_wloss", "abs_wloss", ...
-          "power_wlossCap", "abs_wlossCap", "timestamp_ideal", "timestamp_wloss", "timestamp_wlossCap"];
+          "power_wlossCap", "abs_wlossCap", "timestamp_ideal", "timestamp_wloss", "timestamp_wlossCap","iteration_ideal","iteration_wloss","iteration_wlossCap"];
 
 % Guardar los datos combinados en archivos CSV
 for d = 0:num_deltas-1
