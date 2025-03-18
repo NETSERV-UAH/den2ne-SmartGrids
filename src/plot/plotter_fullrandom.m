@@ -26,7 +26,7 @@ num_deltas = 96;
 num_criteria = 4; 
 
 % Matriz para almacenar los datos de todos los roots
-data3d_all_roots = zeros(num_criteria, 10, num_deltas, num_roots);
+data3d_all_roots = zeros(num_criteria, 13, num_deltas, num_roots);
 
 for r = 1:num_roots
     root_path = fullfile(base_path, root_folders(r).name);
@@ -56,6 +56,7 @@ end
 plotBarWithErrors(mean(data_avg_all(:, [2 4 6], :), 3), sem_all(:, [2 4 6], :), result_path, 'powerBalance_all_roots.pdf', "Balance de potencias global (Todos los Roots)", "Potencia (kW)");
 plotBarWithErrors(mean(data_avg_all(:, [3 5 7], :), 3), sem_all(:, [3 5 7], :), result_path, 'powerAbsFlux_all_roots.pdf', "Flujo absoluto de potencia (Todos los Roots)", "Potencia (kW)");
 plotBarWithErrors(mean(data_avg_all(:, [8 9 10], :), 3), sem_all(:, [8 9 10], :), result_path, 'timestamps_all_roots.pdf', "Tiempos de cálculo (Todos los Roots)", "Tiempo (ms)");
+plotBarWithErrors(mean(data_avg_all(:, [11 12 13], :), 3), sem_all(:, [11 12 13], :), result_path, 'iter_all_roots.pdf', "Iteraciones por criterio (Todos los Roots)", "Num iter.");
 
 function plotBarWithErrors(data_avg, sem, result_path, filename, title_str, ylabel_str)
     h = figure();
