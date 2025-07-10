@@ -510,7 +510,9 @@ def test_ieee34():
     edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links.csv")
     edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
     sw_edges = DataGatherer.getSwitches("data/"+ topo_name + "/" + "switches.csv")
-    positions = DataGatherer.getPositions("data/"+ topo_name + "/" + "node_positions.csv")
+
+    # We cannot use the positions because I have not find these data for this topology
+    #positions = DataGatherer.getPositions("data/"+ topo_name + "/" + "node_positions.csv")
 
     # Creamos la var del grafo para el primer instante
     G = Graph(0, loads, edges, sw_edges, edges_conf, root="800")
