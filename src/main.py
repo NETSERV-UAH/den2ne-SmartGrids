@@ -79,10 +79,10 @@ def test_ieee123():
 
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
-    edges = DataGatherer.getEdges("data/links.csv")
+    edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links.csv")
     edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
-    sw_edges = DataGatherer.getSwitches("data/switches.csv")
-    positions = DataGatherer.getPositions("data/node_positions.csv")
+    sw_edges = DataGatherer.getSwitches("data/"+ topo_name + "/" + "switches.csv")
+    positions = DataGatherer.getPositions("data/"+ topo_name + "/" + "node_positions.csv")
 
     # Creamos la var del grafo para el primer instante
     G = Graph(0, loads, edges, sw_edges, edges_conf, root="150")
@@ -284,10 +284,10 @@ def test_ieee123_fullrandom():
     
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_v2.csv", 3)
-    edges = DataGatherer.getEdges("data/links.csv")
+    edges = DataGatherer.getEdges("data/ieee123/links.csv")
     edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
-    sw_edges = DataGatherer.getSwitches("data/switches.csv")
-    positions = DataGatherer.getPositions("data/node_positions.csv")
+    sw_edges = DataGatherer.getSwitches("data/ieee123/switches.csv")
+    positions = DataGatherer.getPositions("data/ieee123/node_positions.csv")
 
     #nodes_to_test = ['150', '251', '610', '451', '47', '350', '1', '7', '2', '27']
 
