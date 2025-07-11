@@ -507,7 +507,7 @@ def test_ieee34():
 
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_34nodes.csv", 3)
-    edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links.csv")
+    edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links_original.csv")
     edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
     sw_edges = DataGatherer.getSwitches("data/"+ topo_name + "/" + "switches.csv")
 
@@ -518,7 +518,7 @@ def test_ieee34():
     G = Graph(0, loads, edges, sw_edges, edges_conf, root="800")
 
     # Podamos los nodos virtuales que estén a modo de ampliación.
-    G.pruneGraph()
+    #G.pruneGraph()
 
     # Iniciamos el algoritmo
     G_den2ne_alg = Den2ne(G)
@@ -527,7 +527,7 @@ def test_ieee34():
     G_den2ne_alg.spread_ids()
 
     # Vamos a iterar por todos los instantes de cargas
-    for delta in range(0, len(loads["1"])):
+    for delta in range(0, len(loads["826"])):
 
         out_data[delta] = dict()
 
@@ -553,7 +553,7 @@ def test_ieee34():
                     withLosses=False,
                     withCap=False,
                     withDebugPlot=False,
-                    positions=positions,
+                    positions=None,
                     path="results/",
                 )
 
@@ -595,7 +595,7 @@ def test_ieee34():
                         withLosses=True,
                         withCap=False,
                         withDebugPlot=False,
-                        positions=positions,
+                        positions=None,
                         path="results/",
                     )
                 )
@@ -636,7 +636,7 @@ def test_ieee34():
                         withLosses=True,
                         withCap=True,
                         withDebugPlot=False,
-                        positions=positions,
+                        positions=None,
                         path="results/",
                     )
                 )
