@@ -507,7 +507,7 @@ def test_ieee34():
 
     # Recolectamos los datos
     loads = DataGatherer.getLoads("data/loads/loads_34nodes.csv", 3)
-    edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links_original.csv")
+    edges = DataGatherer.getEdges("data/"+ topo_name + "/" +"links_original_2.csv")
     edges_conf = DataGatherer.getEdges_Config("data/links/links_config_8.csv")
     sw_edges = DataGatherer.getSwitches("data/"+ topo_name + "/" + "switches.csv")
 
